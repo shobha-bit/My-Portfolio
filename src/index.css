@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{--bg:242 245 248;--surface:255 255 255;--ink:15 27 45;--muted:74 90 112;--line:213 221 230;--accent:11 111 106;--accent-ink:255 255 255;--amber:168 101 10}
+.dark{--bg:12 20 32;--surface:19 31 47;--ink:230 237 245;--muted:154 171 192;--line:35 52 73;--accent:60 199 184;--accent-ink:6 32 29;--amber:229 162 59}
+
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
+body{@apply bg-bg text-ink font-sans antialiased;
+  background-image:linear-gradient(rgb(var(--line)) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--line)) 1px,transparent 1px);
+  background-size:48px 48px;background-attachment:fixed;background-blend-mode:normal}
+body::before{content:"";position:fixed;inset:0;background:rgb(var(--bg));opacity:.93;z-index:-2}
+body::after{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;animation:drift 40s ease-in-out infinite alternate;
+  background:radial-gradient(40% 35% at 20% 25%,rgb(var(--accent)/.10),transparent),radial-gradient(35% 30% at 80% 70%,rgb(var(--amber)/.06),transparent),radial-gradient(circle,rgb(var(--accent)/.25) 1px,transparent 1.5px) 0 0/96px 96px}
+@media (max-width:640px){body::after{animation:none}}
+:focus-visible{outline:2px solid rgb(var(--accent));outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+@layer components{
+.btn{@apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition-colors}
+.btn-primary{@apply btn bg-accent text-accentink hover:opacity-90}
+.btn-ghost{@apply btn border border-line bg-surface text-ink hover:border-accent hover:text-accent}
+.panel{@apply rounded-lg border border-line bg-surface}
+.section{@apply mx-auto max-w-6xl px-5 py-20 sm:px-8}
+.h2{@apply font-display text-3xl font-bold tracking-tight sm:text-4xl}
+.chip{@apply inline-block rounded border border-line bg-bg px-2.5 py-1 text-xs text-ink}
+}
+
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s ease-out both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.bar{transform-origin:bottom;animation:grow .5s ease-out both}
+
+@keyframes drift{from{transform:translate3d(-2%,-1%,0)}to{transform:translate3d(2%,2%,0)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.4s ease-out .2s forwards}
+@keyframes pop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.pop{transform-box:fill-box;transform-origin:center;opacity:0;animation:pop .4s ease-out forwards}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.barx{transform-origin:left;animation:growx .7s ease-out both}
+@keyframes flow{from{background-position:200% 0}to{background-position:-200% 0}}
+.flowline{display:block;background:linear-gradient(90deg,rgb(var(--line)),rgb(var(--accent)),rgb(var(--line)));background-size:200% 100%;animation:flow 2.4s linear infinite}
+@media (max-width:767px){.flowline{background:linear-gradient(180deg,rgb(var(--line)),rgb(var(--accent)),rgb(var(--line)));background-size:100% 200%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.pulse-dot{animation:pulse 2s ease-in-out infinite}
+
+.cursor-ring{position:fixed;left:-8px;top:-8px;width:16px;height:16px;border:1.5px solid rgb(var(--accent));border-radius:50%;pointer-events:none;z-index:100;transition:width .2s,height .2s,margin .2s,background-color .2s}
+.cursor-ring[data-big="true"]{width:36px;height:36px;margin:-10px;background-color:rgb(var(--accent)/.12)}
